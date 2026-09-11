@@ -28,6 +28,10 @@ export async function fetchCharactersPage(
     ...(gender ? { gender } : {}),
   })
 
+  if (response.status === 404) {
+    return { info: { count: 0, pages: 0, next: null, prev: null }, results: [] }
+  }
+
   if (response.status < 200 || response.status >= 300) {
     throw new Error(getErrorMessage(response))
   }
