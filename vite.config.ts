@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { fileURLToPath, URL } from 'node:url'
 
 import react from '@vitejs/plugin-react'
@@ -10,6 +11,9 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+  },
+  test: {
+    setupFiles: ['src/test/setup.ts'],
   },
   build: {
     rolldownOptions: {
