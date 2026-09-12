@@ -51,7 +51,7 @@ export function CharacterFilterForm({ onSubmit }: CharacterFilterFormProps) {
   return (
     <form
       onSubmit={handleSubmit(submitFilters)}
-      className="grid gap-4 rounded-xl border bg-card p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_auto] lg:items-end"
+      className="glass-panel grid gap-4 rounded-xl p-4 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_auto] lg:items-end"
     >
       <Controller
         control={control}
@@ -64,6 +64,7 @@ export function CharacterFilterForm({ onSubmit }: CharacterFilterFormProps) {
                 id="filter-name"
                 placeholder="e.g. Rick Sanchez"
                 aria-invalid={fieldState.invalid}
+                className="focus-visible:ring-primary/50"
                 {...field}
               />
               <FieldError errors={fieldState.error ? [fieldState.error] : undefined} />
@@ -80,7 +81,10 @@ export function CharacterFilterForm({ onSubmit }: CharacterFilterFormProps) {
             <FieldLabel htmlFor="filter-status">Status</FieldLabel>
             <FieldContent>
               <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger id="filter-status" className="w-full">
+                <SelectTrigger
+                  id="filter-status"
+                  className="w-full focus-visible:ring-primary/50"
+                >
                   <SelectValue placeholder="Any status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -104,7 +108,10 @@ export function CharacterFilterForm({ onSubmit }: CharacterFilterFormProps) {
             <FieldLabel htmlFor="filter-gender">Gender</FieldLabel>
             <FieldContent>
               <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger id="filter-gender" className="w-full">
+                <SelectTrigger
+                  id="filter-gender"
+                  className="w-full focus-visible:ring-primary/50"
+                >
                   <SelectValue placeholder="Any gender" />
                 </SelectTrigger>
                 <SelectContent>
@@ -128,11 +135,10 @@ export function CharacterFilterForm({ onSubmit }: CharacterFilterFormProps) {
         <Button
           type="button"
           variant="outline"
-          size="icon"
           onClick={resetFilters}
-          aria-label="Reset filters"
         >
           <Eraser />
+          Reset
         </Button>
       </div>
     </form>
