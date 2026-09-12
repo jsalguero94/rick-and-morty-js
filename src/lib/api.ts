@@ -2,7 +2,9 @@ import type {
   ApiResponse,
   Character,
   CharacterFilter,
+  Episode,
   Info,
+  Location,
 } from "rickmortyapi"
 
 const API_BASE_URL = "https://rickandmortyapi.com/api"
@@ -42,6 +44,61 @@ export async function getCharactersPage(
   }
 
   const data: Info<Character[]> = await response.json()
+
+  return {
+    status: response.status,
+    statusMessage: response.statusText,
+    data,
+  }
+}
+
+/**
+ * Fetches a batch of episodes by ids via a single comma-joined URL.
+ * Mirrors `getCharactersPage`'s error convention: non-2xx returns an
+ * `ApiResponse` carrying the status instead of throwing.
+ */
+export async function getEpisodesByIds(
+  ids: number[]
+): Promise<ApiResponse<Episode[]>> {
+  if (ids.length === 0) {
+    return { status: 200, statusMessage: "OK", data: [] }
+  }
+
+  const response = await fetch(`${API_BASE_URL}/episode/${ids.join(",")}`)
+
+  if (!response.ok) {
+    return { status: response.status, statusMessage: response.statusText, data: [] }
+  }
+
+  const episodeData = await response.json()
+  const data: Episode[] = Array.isArray(episodeData) ? episodeData : [episodeData]
+
+  return {
+    status: response.status,
+    statusMessage: response.statusText,
+    data,
+  }
+}
+
+/**
+ * Fetches a batch of locations by ids via a single comma-joined URL.
+ * Same error convention as `getEpisodesByIds`.
+ */
+export async function getLocationsByIds(
+  ids: number[]
+): Promise<ApiResponse<Location[]>> {
+  if (ids.length === 0) {
+    return { status: 200, statusMessage: "OK", data: [] }
+  }
+
+  const response = await fetch(`${API_BASE_URL}/location/${ids.join(",")}`)
+
+  if (!response.ok) {
+    return { status: response.status, statusMessage: response.statusText, data: [] }
+  }
+
+  const locationData = await response.json()
+  const data: Location[] = Array.isArray(locationData) ? locationData : [locationData]
 
   return {
     status: response.status,

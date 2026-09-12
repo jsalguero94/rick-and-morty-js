@@ -3,10 +3,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 
 import { CharacterCard } from "@/components/character-card"
+import { CharacterDetailModal } from "@/components/character-detail-modal"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useCharacters } from "@/hooks/useCharacters"
+import type { Character } from "@/types"
 import type { CharacterFilterValues } from "@/lib/validations"
 
 const gridVariants: Variants = {
@@ -43,6 +45,8 @@ export function CharactersList({
   })
   const reducedMotion = useReducedMotion()
   const [inputPage, setInputPage] = useState(String(page))
+  const [selectedCharacter, setSelectedCharacter] =
+    useState<Character | null>(null)
 
   useEffect(() => {
     setInputPage(String(page))
@@ -99,7 +103,10 @@ export function CharactersList({
               variants={itemVariants}
               className="h-full"
             >
-              <CharacterCard character={character} />
+              <CharacterCard
+                character={character}
+                onSelect={setSelectedCharacter}
+              />
             </motion.div>
           ))}
         </motion.div>
@@ -155,6 +162,15 @@ export function CharactersList({
           </Button>
         </div>
       )}
+
+      <CharacterDetailModal
+        key={selectedCharacter?.id}
+        character={selectedCharacter}
+        open={selectedCharacter !== null}
+        onOpenChange={(open) => {
+          if (!open) setSelectedCharacter(null)
+        }}
+      />
     </section>
   )
 }

@@ -1,4 +1,5 @@
 export type { Character } from "rickmortyapi"
+export type { Episode, Location } from "rickmortyapi"
 
 import type { Character } from "rickmortyapi"
 

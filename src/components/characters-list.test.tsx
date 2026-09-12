@@ -212,4 +212,27 @@ describe("CharactersList", () => {
     await screen.findByText("rick 1-1", undefined, { timeout: 3000 })
     await waitUntilVisible("rick 1-1")
   })
+
+  it("opens the detail modal when a card is clicked", async () => {
+    installFetchMock()
+    renderWithQueryClient(<PageNavigationHarness />)
+
+    await screen.findByText("Character 1-1", undefined, { timeout: 3000 })
+    await waitUntilVisible("Character 1-1")
+
+    const title = screen
+      .getAllByText("Character 1-1")
+      .find((el) => el.getAttribute("data-slot") === "card-title")
+    expect(title).toBeDefined()
+
+    const card = title!.closest('button[data-slot="character-card-button"]')
+    expect(card).not.toBeNull()
+
+    act(() => {
+      card!.dispatchEvent(new MouseEvent("click", { bubbles: true }))
+    })
+
+    await screen.findByRole("dialog")
+    expect(screen.getByText(/Details for Character 1-1/i)).not.toBeNull()
+  })
 })
